@@ -72,7 +72,7 @@ function Prediction({ prediction, ticketData, onAlternatives }) {
         </div>
       </section>
       
-<WLChart />
+<WLChart ticketData={ticketData} />
 
 
 

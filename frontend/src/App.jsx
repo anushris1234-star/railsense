@@ -74,13 +74,11 @@ setPage("prediction");
           </p>
         </div>
 
-        <TicketForm onAnalyse={handleAnalyse} />
+        <TicketForm onAnalyse={handleAnalyse} 
+        loading={loading}
+        />
 
-        {loading && (
-          <p className="api-status">
-            Analysing your ticket...
-          </p>
-        )}
+       
 
         {error && (
           <p className="api-error">

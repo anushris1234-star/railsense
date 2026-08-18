@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 
-function TicketForm({ onAnalyse }) {
+function TicketForm({ onAnalyse, loading }) {
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -135,10 +136,14 @@ function TicketForm({ onAnalyse }) {
           />
         </div>
 
-        <button type="submit" className="analyse-button">
-          Analyse My Ticket
-          <ArrowRight size={18} />
-        </button>
+        <button
+  type="submit"
+  className="analyse-button"
+  disabled={loading}
+>
+  {loading ? "Analysing..." : "Analyse My Ticket"}
+  <ArrowRight size={18} />
+</button>
       </div>
     </form>
   );

@@ -15,3 +15,22 @@ export async function predictTicket(payload) {
 
   return response.json();
 }
+
+export async function simulateTicket(current, changes) {
+  const response = await fetch(`${API_URL}/simulate`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      current,
+      changes,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Simulation request failed");
+  }
+
+  return response.json();
+}

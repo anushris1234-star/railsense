@@ -1334,3 +1334,63 @@
     display: none;
   }
 }
+.analysis-status {
+  margin-top: 24px;
+  padding: 16px 18px;
+  border: 1px solid var(--border-color);
+  background: var(--surface);
+  border-radius: 10px;
+}
+
+.analysis-status-header {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 12px;
+}
+
+.analysis-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: analysisPulse 1.2s ease-in-out infinite;
+}
+
+.analysis-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.analysis-step {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  color: #777;
+}
+
+.analysis-step span {
+  width: 18px;
+  text-align: center;
+}
+
+.analysis-step.completed {
+  color: #4f7d5a;
+}
+
+.analysis-step.active {
+  color: #222;
+}
+
+@keyframes analysisPulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
