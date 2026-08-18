@@ -3,20 +3,43 @@ import { TrainFront } from "lucide-react";
 import TicketForm from "./components/TicketForm";
 import Prediction from "./pages/Prediction";
 import Alternatives from "./pages/Alternatives";
+import { predictTicket } from "./api/prediction";
 import "./App.css";
 
 function App() {
   const [page, setPage] = useState("home");
+  const [prediction, setPrediction] = useState(null);
+  const [ticketData, setTicketData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleAnalyse = () => {
-    setPage("prediction");
+  const handleAnalyse = async (payload) => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const result = await predictTicket(payload);
+
+setPrediction(result);
+setTicketData(payload);
+setPage("prediction");
+    } catch (err) {
+      console.error(err);
+      setError(
+        "Unable to analyse the ticket. Please make sure the backend is running."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (page === "prediction") {
     return (
       <Prediction
-        onAlternatives={() => setPage("alternatives")}
-      />
+  prediction={prediction}
+  ticketData={ticketData}
+  onAlternatives={() => setPage("alternatives")}
+/>
     );
   }
 
@@ -52,6 +75,18 @@ function App() {
         </div>
 
         <TicketForm onAnalyse={handleAnalyse} />
+
+        {loading && (
+          <p className="api-status">
+            Analysing your ticket...
+          </p>
+        )}
+
+        {error && (
+          <p className="api-error">
+            {error}
+          </p>
+        )}
       </section>
     </main>
   );

@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { ArrowRight, Sparkles, TrendingUp } from "lucide-react";
 
-function WhatIfSimulator() {
+function WhatIfSimulator({ prediction, ticketData }) {
   const [selectedDate, setSelectedDate] = useState("2026-09-15");
-  const [probability, setProbability] = useState(78);
+  const [probability, setProbability] = useState(
+  prediction?.confirmation_percentage ?? 0
+);
 
   const handleSimulation = (e) => {
     const date = e.target.value;
@@ -20,7 +22,8 @@ function WhatIfSimulator() {
     }
   };
 
-  const improvement = probability - 78;
+  const currentProbability = prediction?.confirmation_percentage ?? 0;
+const improvement = probability - currentProbability;
 
   return (
     <section className="whatif-section">
@@ -46,14 +49,16 @@ function WhatIfSimulator() {
           <p className="card-label">CURRENT TICKET</p>
 
           <div className="current-date">
-            <strong>15 Sep 2026</strong>
-            <span>WL 27</span>
-          </div>
+  <strong>
+    {ticketData?.journey_date || "15 Sep 2026"}
+  </strong>
+  <span>WL {ticketData?.current_wl}</span>
+</div>
 
-          <div className="current-probability">
-            <strong>78%</strong>
-            <span>confirmation probability</span>
-          </div>
+<div className="current-probability">
+  <strong>{currentProbability}%</strong>
+  <span>confirmation probability</span>
+</div>
         </div>
 
         <div className="whatif-arrow">
