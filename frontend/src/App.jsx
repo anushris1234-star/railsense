@@ -14,24 +14,28 @@ function App() {
   const [error, setError] = useState("");
 
   const handleAnalyse = async (payload) => {
-    setLoading(true);
-    setError("");
+  const predictionPayload = { ...payload };
+delete predictionPayload.journey_date;
 
-    try {
-      const result = await predictTicket(payload);
+setLoading(true);
+  setError("");
 
-setPrediction(result);
-setTicketData(payload);
-setPage("prediction");
-    } catch (err) {
-      console.error(err);
-      setError(
-        "Unable to analyse the ticket. Please make sure the backend is running."
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    const result = await predictTicket(predictionPayload);
+
+    setPrediction(result);
+    setTicketData(payload);
+    setPage("prediction");
+  } catch (err) {
+    console.error(err);
+
+    setError(
+      "Unable to analyse the ticket. Please make sure the backend is running."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   if (page === "prediction") {
     return (
@@ -44,12 +48,13 @@ setPage("prediction");
   }
 
   if (page === "alternatives") {
-    return (
-      <Alternatives
-        onBack={() => setPage("prediction")}
-      />
-    );
-  }
+  return (
+    <Alternatives
+  ticketData={ticketData}
+  onBack={() => setPage("prediction")}
+/>
+  );
+}
 
   return (
     <main className="app">

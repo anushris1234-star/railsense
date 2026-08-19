@@ -1,49 +1,44 @@
+import { useEffect, useState } from "react";
 import {
   ArrowLeft,
-  Clock3,
-  IndianRupee,
   Star,
   TrainFront,
   TrendingUp,
 } from "lucide-react";
 
-const alternatives = [
-  {
-    train: "12954",
-    name: "August Kranti Rajdhani",
-    departure: "21:30",
-    arrival: "15:40",
-    duration: "18h 10m",
-    fare: "₹1,340",
-    probability: 91,
-    recommendation: "Best overall",
-  },
-  {
-    train: "12956",
-    name: "Golden Express",
-    departure: "18:40",
-    arrival: "14:30",
-    duration: "19h 50m",
-    fare: "₹1,180",
-    probability: 86,
-    recommendation: "Best value",
-  },
-  {
-    train: "12952",
-    name: "Current ticket",
-    departure: "20:10",
-    arrival: "14:30",
-    duration: "18h 20m",
-    fare: "₹1,250",
-    probability: 78,
-    recommendation: "Current choice",
-  },
-];
+import { getAlternatives } from "../api/prediction";
 
-function Alternatives({ onBack }) {
+function Alternatives({ onBack, ticketData }) {
+  const [alternatives, setAlternatives] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadAlternatives = async () => {
+      if (!ticketData) return;
+
+      setLoading(true);
+      setError("");
+
+      try {
+        const result = await getAlternatives(ticketData);
+
+        setAlternatives(result.alternatives || []);
+      } catch (err) {
+        console.error(err);
+        setError("Unable to load alternatives.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAlternatives();
+  }, [ticketData]);
+
   return (
     <main className="alternatives-page">
       <div className="alternatives-container">
+
         <button className="back-button" onClick={onBack}>
           <ArrowLeft size={17} />
           Back to prediction
@@ -56,131 +51,167 @@ function Alternatives({ onBack }) {
             <h1>Choose the option that works best for you.</h1>
 
             <p>
-              We compared confirmation probability, fare and travel time to
-              find better alternatives for your journey.
+              We compare confirmation probability to help you explore
+              alternative options for your journey.
             </p>
           </div>
         </div>
 
-        <div className="recommendation-banner">
-          <div className="recommendation-icon">
-            <Star size={20} />
+        {loading && (
+          <div className="recommendation-banner">
+            <div className="recommendation-icon">
+              <Star size={20} />
+            </div>
+
+            <div>
+              <p className="banner-label">
+                RAILWISE RECOMMENDATION
+              </p>
+
+              <h2>Finding better options...</h2>
+
+              <p>
+                We are analysing comparable trains using the
+                confirmation model.
+              </p>
+            </div>
           </div>
+        )}
 
-          <div>
-            <p className="banner-label">RAILWISE RECOMMENDATION</p>
+        {error && (
+          <div className="recommendation-banner">
+            <div>
+              <p className="banner-label">UNABLE TO LOAD</p>
 
-            <h2>Train 12954 offers the best overall trade-off.</h2>
+              <h2>{error}</h2>
 
-            <p>
-              It increases your estimated confirmation probability by 13
-              percentage points with only a small increase in fare and travel
-              time.
-            </p>
+              <p>
+                Please make sure the backend is running and try again.
+              </p>
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="comparison-header">
-          <div>
-            <p className="section-label">COMPARE OPTIONS</p>
-            <h2>Available alternatives</h2>
+        {!loading && !error && alternatives.length === 0 && (
+          <div className="recommendation-banner">
+            <div className="recommendation-icon">
+              <Star size={20} />
+            </div>
+
+            <div>
+              <p className="banner-label">
+                SMART RECOMMENDATIONS
+              </p>
+
+              <h2>No alternatives available yet.</h2>
+
+              <p>
+                There are currently no comparable train options in
+                the prototype dataset for this journey.
+              </p>
+            </div>
           </div>
+        )}
 
-          <span>3 options analysed</span>
-        </div>
+        {!loading && !error && alternatives.length > 0 && (
+          <>
+            <div className="comparison-header">
+              <div>
+                <p className="section-label">
+                  COMPARE OPTIONS
+                </p>
 
-        <div className="alternatives-list">
-          {alternatives.map((option) => (
-            <div
-              className={`alternative-card ${
-                option.recommendation === "Best overall"
-                  ? "recommended-option"
-                  : ""
-              }`}
-              key={option.train}
-            >
-              {option.recommendation === "Best overall" && (
-                <div className="best-badge">
-                  <Star size={13} />
-                  Recommended
-                </div>
-              )}
-
-              <div className="train-info">
-                <div className="train-icon">
-                  <TrainFront size={22} />
-                </div>
-
-                <div>
-                  <strong>{option.train}</strong>
-                  <p>{option.name}</p>
-                </div>
+                <h2>Available alternatives</h2>
               </div>
 
-              <div className="journey-time">
-                <div>
-                  <strong>{option.departure}</strong>
-                  <span>Delhi</span>
+              <span>
+                {alternatives.length} options analysed
+              </span>
+            </div>
+
+            <div className="alternatives-list">
+              {alternatives.map((option, index) => (
+                <div
+                  className={`alternative-card ${
+                    index === 0
+                      ? "recommended-option"
+                      : ""
+                  }`}
+                  key={option.train_id}
+                >
+
+                  {index === 0 && (
+                    <div className="best-badge">
+                      <Star size={13} />
+                      Recommended
+                    </div>
+                  )}
+
+                  <div className="train-info">
+                    <div className="train-icon">
+                      <TrainFront size={22} />
+                    </div>
+
+                    <div>
+                      <strong>{option.train_id}</strong>
+
+                      <p>
+                        {option.source} →{" "}
+                        {option.destination}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="alternative-stat">
+                    <span>Confirmation</span>
+
+                    <strong className="confirmation-value">
+                      {option.confirmation_percentage}%
+                    </strong>
+                  </div>
+
+                  <div className="alternative-stat">
+                    <span>Current WL</span>
+
+                    <strong>
+                      WL {option.current_wl}
+                    </strong>
+                  </div>
+
+                  <div className="alternative-stat">
+                    <span>Improvement</span>
+
+                    <strong>
+                      {option.improvement > 0
+                        ? `+${option.improvement}%`
+                        : `${option.improvement}%`}
+                    </strong>
+                  </div>
+
+                  <div className="option-label">
+                    {index === 0
+                      ? "Best confirmation chance"
+                      : "Alternative option"}
+                  </div>
                 </div>
+              ))}
+            </div>
 
-                <div className="journey-line">
-                  <div></div>
-                  <span>{option.duration}</span>
-                  <div></div>
-                </div>
+            <div className="decision-note">
+              <TrendingUp size={19} />
 
-                <div>
-                  <strong>{option.arrival}</strong>
-                  <span>Mumbai</span>
-                </div>
-              </div>
+              <div>
+                <strong>How RailWise chooses</strong>
 
-              <div className="alternative-stat">
-                <span>Confirmation</span>
-
-                <strong className="confirmation-value">
-                  {option.probability}%
-                </strong>
-              </div>
-
-              <div className="alternative-stat">
-                <span>Fare</span>
-
-                <strong>
-                  <IndianRupee size={14} />
-                  {option.fare.replace("₹", "")}
-                </strong>
-              </div>
-
-              <div className="alternative-stat">
-                <span>Journey</span>
-
-                <strong>
-                  <Clock3 size={14} />
-                  {option.duration}
-                </strong>
-              </div>
-
-              <div className="option-label">
-                {option.recommendation}
+                <p>
+                  Alternatives are ranked using the confirmation
+                  probability predicted by the same ML model.
+                </p>
               </div>
             </div>
-          ))}
-        </div>
+          </>
+        )}
 
-        <div className="decision-note">
-          <TrendingUp size={19} />
-
-          <div>
-            <strong>How RailWise chooses</strong>
-
-            <p>
-              Recommendations balance confirmation probability, fare and
-              journey duration instead of simply selecting the train with the
-              highest probability.
-            </p>
-          </div>
-        </div>
       </div>
     </main>
   );

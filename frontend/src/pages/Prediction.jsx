@@ -53,23 +53,37 @@ function Prediction({ prediction, ticketData, onAlternatives }) {
 </div>
 
           <p className="prediction-note">
-            Your ticket has a strong chance of reaching RAC or confirmation.
-          </p>
+  {prediction?.confirmation_percentage >= 75
+    ? "Your ticket has a strong estimated chance of reaching RAC or confirmation."
+    : prediction?.confirmation_percentage >= 50
+    ? "Your ticket has a moderate estimated chance of reaching RAC or confirmation."
+    : "Your ticket has a lower estimated chance of reaching RAC or confirmation."}
+</p>
         </div>
 
         <div className="status-card">
-          <p className="card-label">EXPECTED FINAL STATUS</p>
+  <p className="card-label">EXPECTED FINAL STATUS</p>
 
-          <div className="status-main">
-            <TrendingUp size={25} />
-            <strong>RAC / CNF</strong>
-          </div>
+  <div className="status-main">
+    <TrendingUp size={25} />
 
-          <p>
-            Historical movement suggests your waitlist position is likely to
-            improve before the journey date.
-          </p>
-        </div>
+    <strong>
+      {prediction?.confirmation_percentage >= 75
+        ? "RAC / CNF"
+        : prediction?.confirmation_percentage >= 50
+        ? "RAC likely"
+        : "WL likely"}
+    </strong>
+  </div>
+
+  <p>
+    {prediction?.confirmation_percentage >= 75
+      ? "Your ticket has a strong estimated chance of reaching RAC or confirmation."
+      : prediction?.confirmation_percentage >= 50
+      ? "Your ticket has a moderate estimated chance of improving to RAC or confirmation."
+      : "Your ticket may remain waitlisted, with a lower estimated chance of significant movement."}
+  </p>
+</div>
       </section>
       
 <WLChart ticketData={ticketData} />

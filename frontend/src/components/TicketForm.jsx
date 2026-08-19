@@ -36,25 +36,24 @@ function TicketForm({ onAnalyse, loading }) {
       dayOfWeek === 0 || dayOfWeek === 6 ? 1 : 0;
 
     const payload = {
-      train_id: trainId,
-      source,
-      destination,
-      travel_class: travelClass,
-      quota: "GN",
-      current_wl: currentWl,
-      days_to_journey: daysToJourney,
-      day_of_week: dayOfWeek,
-      is_weekend: isWeekend,
+  train_id: trainId,
+  source,
+  destination,
+  travel_class: travelClass,
+  quota: "GN",
+  current_wl: currentWl,
+  days_to_journey: daysToJourney,
+  day_of_week: dayOfWeek,
+  is_weekend: isWeekend,
+  historical_confirmation_rate: 0.82,
+  historical_cancellation_rate: 0.18,
+};
 
-      // Temporary values for the prototype.
-      // These will eventually come from the backend.
-      historical_confirmation_rate: 0.82,
-      historical_cancellation_rate: 0.18,
-    };
-
-    onAnalyse(payload);
+onAnalyse({
+  ...payload,
+  journey_date: journeyDate,
+});
   };
-
   return (
     <form className="ticket-form" onSubmit={handleSubmit}>
       <div className="form-header">
