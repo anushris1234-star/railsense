@@ -9,6 +9,10 @@ app = FastAPI(title="RailSense API")
 
 
 # Allow requests from the frontend
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI(title="RailSense API")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -16,11 +20,10 @@ app.add_middleware(
         "http://127.0.0.1:5173",
         "https://anushris1234-star.github.io",
     ],
-    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
+    allow_credentials=False,
 )
-
 
 # Load trained ML model
 model_path = "backend/ml/models/confirmation_model.joblib"
