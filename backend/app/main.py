@@ -16,11 +16,10 @@ app.add_middleware(
         "http://127.0.0.1:5173",
         "https://anushris1234-star.github.io",
     ],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 
 # Load trained ML model
