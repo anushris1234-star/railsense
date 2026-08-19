@@ -6,14 +6,42 @@ np.random.seed(42)
 N = 5000
 
 trains = [
+    # Delhi ↔ Mumbai
     ("12952", "Delhi", "Mumbai"),
+    ("12954", "Delhi", "Mumbai"),
+    ("12956", "Delhi", "Mumbai"),
+
     ("12951", "Mumbai", "Delhi"),
+    ("12953", "Mumbai", "Delhi"),
+    ("12955", "Mumbai", "Delhi"),
+
+    # Chennai ↔ New Delhi
     ("12621", "Chennai", "New Delhi"),
+    ("12623", "Chennai", "New Delhi"),
+    ("12625", "Chennai", "New Delhi"),
+
     ("12622", "New Delhi", "Chennai"),
+    ("12624", "New Delhi", "Chennai"),
+    ("12626", "New Delhi", "Chennai"),
+
+    # Chennai ↔ Bengaluru
     ("12007", "Chennai", "Bengaluru"),
+    ("12009", "Chennai", "Bengaluru"),
+    ("12011", "Chennai", "Bengaluru"),
+
     ("12008", "Bengaluru", "Chennai"),
+    ("12010", "Bengaluru", "Chennai"),
+    ("12012", "Bengaluru", "Chennai"),
+
+    # Howrah ↔ Chennai
     ("12839", "Howrah", "Chennai"),
+    ("12841", "Howrah", "Chennai"),
+    ("12843", "Howrah", "Chennai"),
+
     ("12840", "Chennai", "Howrah"),
+    ("12842", "Chennai", "Howrah"),
+    ("12844", "Chennai", "Howrah"),
+
 ]
 
 classes = ["SL", "3A", "2A", "CC"]
@@ -47,31 +75,41 @@ for _ in range(N):
         0.40
     )
 
-    # Calculate a realistic confirmation tendency.
-    score = (
-        1.8
-        - 0.045 * current_wl
-        + 0.055 * days_to_journey
-        + 1.5 * historical_confirmation_rate
-        + 0.8 * historical_cancellation_rate
-        - 0.35 * is_weekend
-        - 0.5 * (quota == "TQ")
-    )
-
-    probability = 1 / (1 + np.exp(-score))
-
-    confirmed = np.random.binomial(1, probability)
+   
     # Train-specific demand profile.
     train_effects = {
-        "12952": 0.10,
-        "12951": 0.05,
-        "12621": -0.05,
-        "12622": -0.10,
-        "12007": 0.15,
-        "12008": 0.10,
-        "12839": -0.15,
-        "12840": -0.10,
-    }
+    "12952": 0.10,
+    "12954": 0.06,
+    "12956": 0.03,
+
+    "12951": 0.05,
+    "12953": 0.02,
+    "12955": 0.00,
+
+    "12621": -0.05,
+    "12623": -0.02,
+    "12625": 0.02,
+
+    "12622": -0.10,
+    "12624": -0.05,
+    "12626": -0.02,
+
+    "12007": 0.15,
+    "12009": 0.10,
+    "12011": 0.06,
+
+    "12008": 0.10,
+    "12010": 0.06,
+    "12012": 0.03,
+
+    "12839": -0.15,
+    "12841": -0.10,
+    "12843": -0.05,
+
+    "12840": -0.10,
+    "12842": -0.06,
+    "12844": -0.03,
+}
 
     train_effect = train_effects[train_id]
 
