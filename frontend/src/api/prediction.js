@@ -16,7 +16,7 @@ export async function predictTicket(payload) {
   return response.json();
 }
 
-export async function simulateTicket(current, tchanges) {
+export async function simulateTicket(current, changes) {
   const predictionPayload = { ...current };
   delete predictionPayload.journey_date;
 
