@@ -1,4 +1,4 @@
-const API_URL = "railsense-production.up.railway.app";
+const API_URL = "https://railsense-production.up.railway.app";
 
 export async function predictTicket(payload) {
   const response = await fetch(`${API_URL}/predict`, {
@@ -16,7 +16,7 @@ export async function predictTicket(payload) {
   return response.json();
 }
 
-export async function simulateTicket(current, changes) {
+export async function simulateTicket(current, tchanges) {
   const predictionPayload = { ...current };
   delete predictionPayload.journey_date;
 
