@@ -26,6 +26,7 @@ function Prediction({ prediction, ticketData, onAlternatives }) {
       </div>
 
       <section className="prediction-grid">
+        <div className="prediction-overview">
         <div className="probability-card">
           <div className="card-top">
             <div>
@@ -84,6 +85,7 @@ function Prediction({ prediction, ticketData, onAlternatives }) {
       : "Your ticket may remain waitlisted, with a lower estimated chance of significant movement."}
   </p>
 </div>
+</div>
       </section>
       
 <WLChart ticketData={ticketData} />
@@ -97,10 +99,7 @@ function Prediction({ prediction, ticketData, onAlternatives }) {
       <h2>What is influencing your forecast?</h2>
     </div>
 
-    <span className="confidence-label">
-      <CheckCircle2 size={15} />
-      Model estimate
-    </span>
+    
   </div>
 
   <div className="factors-list">
@@ -124,7 +123,9 @@ function Prediction({ prediction, ticketData, onAlternatives }) {
             : "factor-negative"
         }
       >
-        {ticketData?.current_wl <= 10 ? "Positive" : "Caution"}
+        {ticketData?.current_wl <= 10
+  ? "Favorable"
+  : "Needs attention"}
       </span>
     </div>
 
@@ -146,7 +147,9 @@ function Prediction({ prediction, ticketData, onAlternatives }) {
             : "factor-negative"
         }
       >
-        {ticketData?.days_to_journey >= 15 ? "Positive" : "Caution"}
+        {ticketData?.days_to_journey >= 15
+  ? "Favorable"
+  : "Needs attention"}
       </span>
     </div>
 
@@ -170,8 +173,8 @@ function Prediction({ prediction, ticketData, onAlternatives }) {
         }
       >
         {(ticketData?.historical_confirmation_rate ?? 0) >= 0.7
-          ? "Positive"
-          : "Caution"}
+  ? "Favorable"
+  : "Needs attention"}
       </span>
     </div>
 
@@ -192,7 +195,9 @@ function Prediction({ prediction, ticketData, onAlternatives }) {
             : "factor-positive"
         }
       >
-        {ticketData?.is_weekend ? "Caution" : "Positive"}
+        {ticketData?.is_weekend
+  ? "Needs attention"
+  : "Favorable"}
       </span>
     </div>
   </div>

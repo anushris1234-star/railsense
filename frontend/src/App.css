@@ -1,10 +1,34 @@
 /* ================================
    GENERAL
 ================================ */
+:root {
+  --primary:  #2864c7;
+  --primary-dark: #1f55aa;
+  --primary-soft: #eef4ff;
 
+  --text-primary: #182230;
+  --text-secondary: #687385;
+  --text-muted: #7a8494;
+
+  --background: #f5f7fa;
+  --surface: #ffffff;
+  --border: #dde3ea;
+
+  --success: #2f9b58;
+  --success-soft: #edf8f0;
+
+  --error: #c94a3d;
+  --error-soft: #fff1ef;
+    --font-display: 36px;
+  --font-section: 23px;
+  --font-subheading: 16px;
+  --font-body: 14px;
+  --font-small: 12px;
+  --font-label: 10px;
+}
 .app {
   min-height: 100vh;
-  background: #f6f7f9;
+  background: var(--background);
 }
 
 /* ================================
@@ -25,13 +49,13 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  color: #182230;
+  color: var(--primary);
   font-size: 19px;
   font-weight: 700;
 }
 
 .nav-right {
-  color: #687385;
+  color: var(--text-secondary);
   font-size: 13px;
 }
 
@@ -51,7 +75,7 @@
 
 .page-intro h1 {
   margin-bottom: 9px;
-  color: #182230;
+  color: var(--text-primary);
   font-size: 30px;
   font-weight: 650;
   letter-spacing: -0.5px;
@@ -59,7 +83,7 @@
 
 .page-intro p {
   max-width: 680px;
-  color: #687385;
+  color: var(--text-secondary);
   font-size: 14px;
   line-height: 1.55;
 }
@@ -73,6 +97,7 @@
   background: white;
   border: 1px solid #dfe3e8;
   border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(22, 32, 51, 0.04);
 }
 
 .form-header {
@@ -84,14 +109,14 @@
 
 .section-label {
   margin-bottom: 5px;
-  color: #2864c7;
+  color: var(--primary);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.8px;
 }
 
 .form-header h2 {
-  color: #182230;
+  color: var(--text-primary);
   font-size: 20px;
   font-weight: 650;
 }
@@ -127,7 +152,7 @@
   border: 1px solid #cfd5dd;
   border-radius: 5px;
   background: white;
-  color: #182230;
+  color: var(--text-primary);
   font-family: inherit;
   font-size: 13px;
   outline: none;
@@ -136,7 +161,7 @@
 .form-group input:focus,
 .form-group select:focus,
 .passenger-input input:focus {
-  border-color: #2864c7;
+  border-color: var(--primary);
 }
 
 .form-bottom {
@@ -162,16 +187,25 @@
   gap: 8px;
   border: none;
   border-radius: 5px;
-  background: #182230;
+  background: var(--primary);
   color: white;
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .analyse-button:hover {
-  background: #2864c7;
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(40, 100, 199, 0.18);
+}
+
+.analyse-button:active {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 /* ================================
@@ -231,8 +265,10 @@
 
 .prediction-header h1 {
   margin: 5px 0 8px;
-  color: #162033;
-  font-size: 36px;
+  color: var(--text-primary);
+  font-size: var(--font-display);
+  font-weight: 650;
+  line-height: 1.15;
   letter-spacing: -1px;
 }
 
@@ -267,17 +303,25 @@
 .prediction-grid {
   max-width: 1150px;
   margin: 0 auto;
+}
+
+.prediction-overview {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 20px;
+  grid-template-columns: 1.6fr 1fr;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
 }
 
 .probability-card,
 .status-card {
   padding: 28px;
-  border: 1px solid #e3e7ed;
-  border-radius: 15px;
-  background: white;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .card-top {
@@ -289,10 +333,11 @@
 
 .card-label {
   margin-bottom: 8px;
-  color: #7a8494;
-  font-size: 11px;
+  color: var(--text-muted);
+  font-size: var(--font-label);
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
 }
 
 .probability-card h2 {
@@ -303,15 +348,15 @@
 }
 
 .status-badge {
-  padding: 7px 11px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  border-radius: 20px;
-  background: #edf8f0;
-  color: #2d7a45;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .probability-bar {
@@ -323,10 +368,10 @@
 }
 
 .probability-fill {
-  width: 78%;
   height: 100%;
   border-radius: inherit;
-  background: #2f9b58;
+  background: var(--primary);
+  transition: width 0.4s ease;
 }
 
 .prediction-note {
@@ -341,6 +386,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border-left: 1px solid var(--border);
 }
 
 .status-main {
@@ -348,7 +394,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #2864c7;
+  color: var(--primary);
 }
 
 .status-main strong {
@@ -367,10 +413,8 @@
 .factors-section {
   max-width: 1150px;
   margin: 35px auto 0;
-  padding: 28px;
-  border: 1px solid #e3e7ed;
-  border-radius: 15px;
-  background: white;
+  padding: 28px 0 0;
+  background: transparent;
 }
 
 .section-heading {
@@ -381,8 +425,10 @@
 }
 
 .section-heading h2 {
-  color: #162033;
-  font-size: 23px;
+  color: var(--text-primary);
+  font-size: var(--font-section);
+  font-weight: 650;
+  line-height: 1.2;
 }
 
 .confidence-label {
@@ -392,56 +438,67 @@
   gap: 6px;
   border-radius: 20px;
   background: #eef4ff;
-  color: #2864c7;
+  color: var(--primary);
   font-size: 12px;
   font-weight: 600;
 }
 
 .factors-list {
+  margin-top: 22px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  border-top: 1px solid var(--border);
 }
 
 .factor {
-  padding: 17px;
+  min-height: 92px;
+  padding: 18px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 15px;
-  border: 1px solid #e8ebef;
-  border-radius: 10px;
+  gap: 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+}
+
+.factor:nth-child(odd) {
+  border-right: 1px solid var(--border);
+}
+
+.factor > div {
+  min-width: 0;
 }
 
 .factor strong {
-  color: #263246;
-  font-size: 14px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 650;
 }
 
 .factor p {
   margin-top: 5px;
-  color: #7a8494;
-  font-size: 12px;
-  line-height: 1.4;
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 1.5;
 }
 
 .factor-positive,
 .factor-negative {
   flex-shrink: 0;
-  padding: 5px 9px;
-  border-radius: 5px;
+  padding: 0;
+  background: transparent;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 650;
+  letter-spacing: 0;
 }
 
 .factor-positive {
-  background: #edf8f0;
-  color: #2d7a45;
+  color: var(--success);
 }
 
 .factor-negative {
-  background: #fff1ef;
-  color: #bd4b3d;
+  color: var(--error);
 }
 
 /* NEXT STEP */
@@ -463,7 +520,7 @@
   display: flex;
   align-items: flex-start;
   gap: 13px;
-  color: #2864c7;
+  color: var(--primary);
 }
 
 .next-step-card strong {
@@ -492,7 +549,7 @@
 }
 
 .next-step-card button:hover {
-  background: #2864c7;
+  background: var(--primary);
 }
 
 /* PREDICTION MOBILE */
@@ -529,6 +586,14 @@
     align-items: stretch;
     flex-direction: column;
   }
+  .prediction-overview {
+  grid-template-columns: 1fr;
+}
+
+.status-card {
+  border-left: none;
+  border-top: 1px solid var(--border);
+}
 }
 /* ================================
    WL MOVEMENT CHART
@@ -541,6 +606,7 @@
   border: 1px solid #e3e7ed;
   border-radius: 15px;
   background: white;
+  box-shadow: var(--shadow-sm);
 }
 
 .wl-chart-header {
@@ -550,10 +616,12 @@
   gap: 20px;
 }
 
-.wl-chart-header h2 {
+.whatif-header h2 {
   margin-bottom: 6px;
-  color: #162033;
-  font-size: 23px;
+  color: var(--text-primary);
+  font-size: var(--font-section);
+  font-weight: 650;
+  line-height: 1.2;
 }
 
 .wl-chart-header p:last-child {
@@ -571,7 +639,7 @@
 }
 
 .movement-summary strong {
-  color: #2864c7;
+  color: var(--primary);
   font-size: 14px;
 }
 
@@ -626,6 +694,7 @@
   border: 1px solid #dce6f7;
   border-radius: 15px;
   background: white;
+  box-shadow: var(--shadow-sm);
 }
 
 .whatif-header {
@@ -655,22 +724,24 @@
   justify-content: center;
   border-radius: 10px;
   background: #eef4ff;
-  color: #2864c7;
+  color: var(--primary);
 }
 
 .whatif-content {
   display: grid;
   grid-template-columns: 1fr auto 1fr 1.1fr;
   align-items: stretch;
-  gap: 15px;
+  gap: 0;
+  margin-top: 24px;
 }
 
 .current-option,
 .simulation-option,
 .simulation-result {
-  padding: 20px;
-  border: 1px solid #e5e9ef;
-  border-radius: 10px;
+  padding: 20px 24px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
 }
 
 .current-date {
@@ -681,12 +752,12 @@
 }
 
 .current-date strong {
-  color: #162033;
+  color: var(--text-primary);
   font-size: 16px;
 }
 
 .current-date span {
-  color: #7a8494;
+  color: var(--text-muted);
   font-size: 12px;
 }
 
@@ -697,12 +768,12 @@
 }
 
 .current-probability strong {
-  color: #162033;
+  color: var(--text-primary);
   font-size: 26px;
 }
 
 .current-probability span {
-  color: #7a8494;
+  color: var(--text-muted);
   font-size: 11px;
 }
 
@@ -716,6 +787,19 @@
 .simulation-option {
   display: flex;
   flex-direction: column;
+  border-left: 1px solid var(--border);
+}
+
+.simulation-result {
+  border-left: 1px solid var(--border);
+}
+
+.whatif-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  color: #9aa4b2;
 }
 
 .simulation-option label {
@@ -732,14 +816,14 @@
   border: 1px solid #d9dee7;
   border-radius: 7px;
   background: white;
-  color: #162033;
+  color: var(--text-primary);
   font-family: inherit;
   font-size: 13px;
   outline: none;
 }
 
 .simulation-option select:focus {
-  border-color: #2864c7;
+  border-color: var(--primary);
 }
 
 .new-probability {
@@ -750,24 +834,21 @@
 }
 
 .new-probability strong {
-  color: #2f9b58;
+  color: var(--success);
   font-size: 31px;
 }
 
 .new-probability span {
-  padding: 5px 8px;
   display: flex;
   align-items: center;
   gap: 3px;
-  border-radius: 5px;
-  background: #edf8f0;
-  color: #2d7a45;
+  color: var(--success);
   font-size: 11px;
   font-weight: 700;
 }
 
 .simulation-result > p:last-child {
-  color: #697386;
+  color: var(--text-secondary);
   font-size: 11px;
   line-height: 1.45;
 }
@@ -806,12 +887,20 @@
 
 @media (max-width: 850px) {
   .whatif-content {
-    grid-template-columns: 1fr;
-  }
+  grid-template-columns: 1fr;
+  gap: 0;
+}
 
-  .whatif-arrow {
-    transform: rotate(90deg);
-  }
+.simulation-option,
+.simulation-result {
+  border-left: none;
+  border-top: 1px solid var(--border);
+}
+
+.whatif-arrow {
+  padding: 12px 0;
+  transform: rotate(90deg);
+}
 }
 
 @media (max-width: 750px) {
@@ -853,7 +942,7 @@
 }
 
 .back-button:hover {
-  color: #2864c7;
+  color: var(--primary);
 }
 
 .alternatives-header {
@@ -995,7 +1084,7 @@
   justify-content: center;
   border-radius: 9px;
   background: #eef4ff;
-  color: #2864c7;
+  color: var(--primary);
 }
 
 .train-info strong {
@@ -1092,7 +1181,7 @@
   gap: 11px;
   border-radius: 9px;
   background: #eef4ff;
-  color: #2864c7;
+  color: var(--primary);
 }
 
 .decision-note strong {
@@ -1174,7 +1263,7 @@
 
 .railway-heading h2 {
   margin-top: 5px;
-  color: #182230;
+  color: var(--primary);
   font-size: 21px;
   font-weight: 650;
 }

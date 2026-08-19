@@ -1,9 +1,28 @@
 import { useState } from "react";
 import { ArrowRight, Sparkles, TrendingUp } from "lucide-react";
 import { simulateTicket } from "../api/prediction";
+const formatDate = (date) => {
+  if (!date) return "";
+
+  return new Date(`${date}T00:00:00`).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
 
 function WhatIfSimulator({ prediction, ticketData }) {
   const currentProbability = prediction?.confirmation_percentage ?? 0;
+  const currentDate = ticketData?.journey_date;
+
+const simulationDates = currentDate
+  ? [-1, 0, 1].map((offset) => {
+      const date = new Date(`${currentDate}T00:00:00`);
+      date.setDate(date.getDate() + offset);
+
+      return date.toISOString().split("T")[0];
+    })
+  : [];
 
   const [selectedDate, setSelectedDate] = useState(
     ticketData?.journey_date || "2026-09-15"
@@ -86,8 +105,8 @@ function WhatIfSimulator({ prediction, ticketData }) {
 
           <div className="current-date">
             <strong>
-              {ticketData?.journey_date || "15 Sep 2026"}
-            </strong>
+  {formatDate(ticketData?.journey_date)}
+</strong>
 
             <span>
               WL {ticketData?.current_wl}
@@ -117,17 +136,11 @@ function WhatIfSimulator({ prediction, ticketData }) {
             onChange={handleSimulation}
             disabled={loading}
           >
-            <option value="2026-09-14">
-              14 Sep 2026
-            </option>
-
-            <option value="2026-09-15">
-              15 Sep 2026
-            </option>
-
-            <option value="2026-09-16">
-              16 Sep 2026
-            </option>
+            {simulationDates.map((date) => (
+  <option key={date} value={date}>
+    {formatDate(date)}
+  </option>
+))}
           </select>
         </div>
 
