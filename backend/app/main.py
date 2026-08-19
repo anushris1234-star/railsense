@@ -14,11 +14,13 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
+        "https://anushris1234-star.github.io",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 
 # Load trained ML model
@@ -284,57 +286,4 @@ def find_alternatives(ticket: AlternativesInput):
         "alternatives": alternatives,
         "data_source": "synthetic_prototype_data",
         "live_availability": False,
-    }
-# -----------------------------
-# Historical movement endpoint
-# -----------------------------
-
-class MovementInput(BaseModel):
-    source: str
-    destination: str
-    travel_class: str
-    current_wl: int
-    days_to_journey: int
-
-
-@app.post("/movement")
-def historical_movement(ticket: MovementInput):
-
-    # Find tickets from the same route and class
-    candidates = ticket_data[
-        (ticket_data["source"] == ticket.source)
-        & (ticket_data["destination"] == ticket.destination)
-        & (ticket_data["travel_class"] == ticket.travel_class)
-    ].copy()
-
-    # If there are no comparable tickets, return an empty result
-    if candidates.empty:
-        return {
-            "movement": [],
-            "data_source": "synthetic_prototype_data",
-        }
-
-    # Group comparable tickets by days remaining
-    movement = (
-        candidates
-        .groupby("days_to_journey")["current_wl"]
-        .mean()
-        .reset_index()
-        .sort_values("days_to_journey", ascending=False)
-    )
-
-    # Keep the closest historical points around the user's journey
-    movement = movement.head(6)
-
-    result = []
-
-    for _, row in movement.iterrows():
-        result.append({
-            "days_to_journey": int(row["days_to_journey"]),
-            "average_wl": round(float(row["current_wl"]), 1),
-        })
-
-    return {
-        "movement": result,
-        "data_source": "synthetic_prototype_data",
     }
